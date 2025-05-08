@@ -6,7 +6,7 @@ from PIL import Image
 import gdown
 import os
 import random
-import matplotlib.pyplot as plt
+
 import pandas as pd
 
 # --------------------- Page config ---------------------
@@ -87,13 +87,7 @@ if uploaded_file:
         st.success(f"Thank you for your feedback! You rated the prediction {feedback} stars.")
 
         # Display feedback chart
-        feedback_counts = st.session_state.feedback_data['Rating'].value_counts().sort_index()
-        fig, ax = plt.subplots()
-        feedback_counts.plot(kind='bar', ax=ax, color='lightcoral')
-        ax.set_title("User Feedback Ratings")
-        ax.set_xlabel("Ratings")
-        ax.set_ylabel("Number of Responses")
-        st.pyplot(fig)
+#
 
 else:
     st.warning("📁 Please upload an image to get started.")
