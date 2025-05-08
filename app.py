@@ -6,6 +6,9 @@ from PIL import Image
 import gdown
 import os
 
+# --------------------- Page config ---------------------
+st.set_page_config(page_title="Chili Powder Classifier", page_icon="🌶️", layout="centered")
+
 # --------------------- Download model if not exists ---------------------
 model_path = 'chilipowder_model.h5'
 if not os.path.exists(model_path):
@@ -17,11 +20,6 @@ if not os.path.exists(model_path):
 # --------------------- Load model ---------------------
 model = tf.keras.models.load_model(model_path)
 class_names = ["100-0", "80-20", "70-30", "60-40", "50-50"]
-
-# --------------------- Page config ---------------------
-
-st.set_page_config(page_title="Chili Powder Classifier", page_icon="🌶️", layout="centered")
-
 
 # --------------------- Sidebar ---------------------
 st.sidebar.image("https://cdn-icons-png.flaticon.com/512/2909/2909765.png", width=120)
