@@ -69,29 +69,6 @@ if uploaded_file:
     # Display result
     st.success(f"✅ **Prediction Near About:** `{pred_class}`")
     st.info(f"🔍 **Confidence:** `{confidence:.2f}%`")
-
-    # --------------------- User Feedback ---------------------
-    st.markdown("### 💬 Provide Your Feedback")
-    feedback = st.slider("How confident are you in this prediction?", 1, 5, 3, step=1)
-    submit_feedback = st.button("Submit Feedback")
-
-    if submit_feedback:
-        if 'feedback_data' not in st.session_state:
-            st.session_state.feedback_data = pd.DataFrame(columns=["Rating"])
-
-        # Append feedback
-        new_feedback = pd.DataFrame({"Rating": [feedback]})
-        st.session_state.feedback_data = pd.concat([st.session_state.feedback_data, new_feedback], ignore_index=True)
-
-        st.success(f"Thank you! You rated this prediction {feedback} star(s).")
-
-        # Show feedback chart
-        feedback_counts = st.session_state.feedback_data['Rating'].value_counts().sort_index()
-        st.markdown("#### 📊 User Feedback Overview")
-        st.bar_chart(feedback_counts)
-else:
-    st.warning("📁 Please upload an image to get started.")
-
 # --------------------- Footer ---------------------
 st.markdown("""
 <hr>
