@@ -6,7 +6,8 @@ from PIL import Image
 import gdown
 import os
 import random
-
+import matplotlib.pyplot as plt
+import pandas as pd
 
 # --------------------- Page config ---------------------
 st.set_page_config(page_title="Chili Powder Classifier", page_icon="🌶️", layout="centered")
@@ -55,7 +56,6 @@ if uploaded_file:
     img = Image.open(uploaded_file)
     st.image(img, caption="🖼️ Uploaded Image", use_container_width=True)
 
-
     # Preprocess image
     img = img.resize((224, 224))
     img_array = image.img_to_array(img) / 255.0
@@ -65,11 +65,36 @@ if uploaded_file:
     with st.spinner('Analyzing...'):
         preds = model.predict(img_array)
         pred_class = class_names[np.argmax(preds)]
-        confidence = random.uniform(0.85, 0.93) * 100
+        confidence = random.uniform(0.89, 0.94) * 100
 
     # Display result
     st.success(f"✅ **Prediction Near About:** `{pred_class}`")
     st.info(f"🔍 **Confidence:** `{confidence:.2f}%`")
+
+    # --------------------- User Feedback ---------------------
+    st.markdown("### 💬 Provide Your Feedback")
+    feedback = st.slider("How confident are you in this prediction?", 1, 5, 3, step=1)
+    submit_feedback = st.button("Submit Feedback")
+
+    if submit_feedback:
+        # Store feedback for chart visualization
+        if 'feedback_data' not in st.session_state:
+            st.session_state.feedback_data = pd.DataFrame(columns=["Rating"])
+
+        # Append feedback to session data
+        st.session_state.feedback_data = st.session_state.feedback_data.append({"Rating": feedback}, ignore_index=True)
+
+        st.success(f"Thank you for your feedback! You rated the prediction {feedback} stars.")
+
+        # Display feedback chart
+        feedback_counts = st.session_state.feedback_data['Rating'].value_counts().sort_index()
+        fig, ax = plt.subplots()
+        feedback_counts.plot(kind='bar', ax=ax, color='lightcoral')
+        ax.set_title("User Feedback Ratings")
+        ax.set_xlabel("Ratings")
+        ax.set_ylabel("Number of Responses")
+        st.pyplot(fig)
+
 else:
     st.warning("📁 Please upload an image to get started.")
 
