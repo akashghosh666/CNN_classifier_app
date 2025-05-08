@@ -6,7 +6,6 @@ from PIL import Image
 import gdown
 import os
 import random
-
 import pandas as pd
 
 # --------------------- Page config ---------------------
@@ -77,18 +76,19 @@ if uploaded_file:
     submit_feedback = st.button("Submit Feedback")
 
     if submit_feedback:
-        # Store feedback for chart visualization
         if 'feedback_data' not in st.session_state:
             st.session_state.feedback_data = pd.DataFrame(columns=["Rating"])
 
-        # Append feedback to session data
-        st.session_state.feedback_data = st.session_state.feedback_data.append({"Rating": feedback}, ignore_index=True)
+        # Append feedback
+        new_feedback = pd.DataFrame({"Rating": [feedback]})
+        st.session_state.feedback_data = pd.concat([st.session_state.feedback_data, new_feedback], ignore_index=True)
 
-        st.success(f"Thank you for your feedback! You rated the prediction {feedback} stars.")
+        st.success(f"Thank you! You rated this prediction {feedback} star(s).")
 
-        # Display feedback chart
-#
-
+        # Show feedback chart
+        feedback_counts = st.session_state.feedback_data['Rating'].value_counts().sort_index()
+        st.markdown("#### 📊 User Feedback Overview")
+        st.bar_chart(feedback_counts)
 else:
     st.warning("📁 Please upload an image to get started.")
 
