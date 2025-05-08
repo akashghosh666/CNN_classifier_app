@@ -1,0 +1,14 @@
+# Ignore model files
+#*.h5
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore Streamlit cache
+.streamlit/
+
+# Ignore environment folders (if any)
+env/
+venv/
+chilipowder_model.h5
